@@ -1039,6 +1039,7 @@ int primordial_inflation_potential(
       *dV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*pow(phi,2)/4.+pow(ppm->V0*ppm->V2,2)*phi-pow(ppm->V3,4)*pow(phi,3)/ppm->V2;
       *ddV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*phi/2.+pow(ppm->V0*ppm->V3,2)-3.*pow(ppm->V3,4)*pow(phi,2)/ppm->V2;
     }
+    break;
 
     /* code here other shapes */
 
