@@ -1171,7 +1171,7 @@ int primordial_inflation_solve_inflation(
   class_alloc(dy,ppm->in_size*sizeof(double),ppm->error_message);
 
   /** - eventually, needs first to find phi_pivot */
-  if (ppm->primordial_spec_type == inflation_V_end) {
+  if ((ppm->primordial_spec_type == inflation_V_end) || (ppm->primordial_spec_type == inflation_V)) {
 
     class_call(primordial_inflation_find_phi_pivot(ppm,ppr,y,dy),
                ppm->error_message,
