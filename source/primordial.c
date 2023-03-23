@@ -1029,7 +1029,7 @@ int primordial_inflation_potential(
     break;
 
   case hybrid_model:
-    if(phi>=ppm->V0*sqrt(ppm->V2/ppm->V3)){
+    if(phi >= ppm->V0*sqrt(ppm->V2/ppm->V3)){
       *V = pow(ppm->V0,4)*ppm->V2/4.*(1.+ppm->V1*pow(phi,3));
       *dV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*pow(phi,2)/4.;
       *ddV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*phi/2.;
