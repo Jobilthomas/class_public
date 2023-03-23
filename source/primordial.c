@@ -1170,7 +1170,9 @@ int primordial_inflation_solve_inflation(
   class_alloc(y,ppm->in_size*sizeof(double),ppm->error_message);
   class_alloc(y_ini,ppm->in_size*sizeof(double),ppm->error_message);
   class_alloc(dy,ppm->in_size*sizeof(double),ppm->error_message);
-
+  
+  ppm->phi_pivot = 3.;
+  printf("phi_pivot = ",ppm->phi_pivot);
   /** - eventually, needs first to find phi_pivot */
   if ((ppm->primordial_spec_type == inflation_V_end) || (ppm->primordial_spec_type == inflation_V)) {
 
@@ -1183,7 +1185,7 @@ int primordial_inflation_solve_inflation(
   else {
     ppm->phi_pivot = 0.;
   }
-  printf(phi_pivot);
+  printf("phi_pivot = ",ppm->phi_pivot);
   // uncomment these lines if for checking, you want first-order slow-roll predictions
   /*
     if (ppm->primordial_verbose>0) {
