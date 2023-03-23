@@ -1177,13 +1177,13 @@ int primordial_inflation_solve_inflation(
     class_call(primordial_inflation_find_phi_pivot(ppm,ppr,y,dy),
                ppm->error_message,
                ppm->error_message);
-    printf(ppm->phi_pivot)
+   
 
   }
   else {
     ppm->phi_pivot = 0.;
   }
-
+  printf(phi_pivot);
   // uncomment these lines if for checking, you want first-order slow-roll predictions
   /*
     if (ppm->primordial_verbose>0) {
