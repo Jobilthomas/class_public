@@ -1177,6 +1177,7 @@ int primordial_inflation_solve_inflation(
     class_call(primordial_inflation_find_phi_pivot(ppm,ppr,y,dy),
                ppm->error_message,
                ppm->error_message);
+    printf(ppm->phi_pivot)
 
   }
   else {
