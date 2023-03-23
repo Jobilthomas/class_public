@@ -4359,6 +4359,9 @@ int input_read_parameters_primordial(struct file_content * pfc,
       else if (strcmp(string1,"higgs_inflation") == 0){
         ppm->potential = higgs_inflation;
       }
+      else if (strcmp(string1,"hybrid_model") == 0){
+        ppm->potential = hybrid_model;
+      }
       else{
         class_stop(errmsg,"You specified 'full_potential' as '%s'. It has to be one of {'polynomial','higgs_inflation'}.",string1);
       }
