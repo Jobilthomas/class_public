@@ -2588,7 +2588,7 @@ int primordial_inflation_find_phi_pivot(
 
   /** - case in which epsilon>1: hence we must find the value phi_stop <
       phi_end where inflation ends up naturally */
-
+  printf("epsilon = %g",epsilon);
   if (epsilon > 1.) {
 
     // assume that inflation ends up naturally
