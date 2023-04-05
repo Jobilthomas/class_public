@@ -1035,9 +1035,9 @@ int primordial_inflation_potential(
       *ddV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*phi/2.;
     }
     else{
-      *V = pow(ppm->V0,4)*ppm->V2/4.*(1.+ppm->V1*pow(phi,3))-pow(ppm->V2*pow(ppm->V0,2)-pow(ppm->V3*phi,2),2)/(4.*ppm->V2);
-      *dV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*pow(phi,2)/4.+pow(ppm->V0*ppm->V2,2)*phi-pow(ppm->V3,4)*pow(phi,3)/ppm->V2;
-      *ddV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*phi/2.+pow(ppm->V0*ppm->V3,2)-3.*pow(ppm->V3,4)*pow(phi,2)/ppm->V2;
+      *V = pow(ppm->V0,4)*ppm->V2/4.*(1.+ppm->V1*pow(phi,3))-pow(ppm->V2*pow(ppm->V0,2)-ppm->V3*pow(phi,2),2)/(4.*ppm->V2);
+      *dV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*pow(phi,2)/4.+ppm->V3*pow(ppm->V0,2)*phi-pow(ppm->V3,2)*pow(phi,3)/ppm->V2;
+      *ddV = 3.*pow(ppm->V0,4)*ppm->V2*ppm->V1*phi/2.+ppm->V3*pow(ppm->V0,2)-3.*pow(ppm->V3,2)*pow(phi,2)/ppm->V2;
     }
     break;
 
@@ -1171,8 +1171,7 @@ int primordial_inflation_solve_inflation(
   class_alloc(y_ini,ppm->in_size*sizeof(double),ppm->error_message);
   class_alloc(dy,ppm->in_size*sizeof(double),ppm->error_message);
   
-  ppm->phi_pivot = 3.;
-  printf("phi_pivot = %g",ppm->phi_pivot);
+  
   /** - eventually, needs first to find phi_pivot */
   if ((ppm->primordial_spec_type == inflation_V_end) || (ppm->primordial_spec_type == inflation_V)) {
 
@@ -1858,7 +1857,7 @@ int primordial_inflation_one_k(
 
   dtau = ppr->primordial_inflation_pt_stepsize*2.*_PI_
     /MAX(sqrt(fabs(dy[ppm->index_in_dksi_re]/y[ppm->index_in_ksi_re])),k);
-
+  printf("dtau =%g",dtau);
   /** - loop over time */
   do {
 
@@ -1940,7 +1939,7 @@ int primordial_inflation_one_k(
  * corresponding roughly to 1 e-fold of inflation. Each time, the
  * integration starts with the initial condition \f$ \phi=-V'/3H\f$ (slow-roll
  * prediction). If the found value of \f$\phi'\f$ in phi_0 is stable (up to
- * the parameter "precision"), the code considers that there is an
+ * the parameter "precision"), the code considers that there is an 
  * attractor, and stops iterating. If this process does not converge,
  * it returns an error message.
  *
@@ -2205,7 +2204,7 @@ int primordial_inflation_evolve_background(
 
   /* loop over time steps, checking that there will be no overshooting */
 
-  while (sign_dtau*(quantity - stop) < 0.) {
+  while (sign_dtau*(stop - quantity) < 0.) {
 
     /* check that V(phi) or H(phi) do not take forbidden values
        (negative or positive derivative) */
@@ -2436,7 +2435,7 @@ int primordial_inflation_check_potential(
              "This potential becomes negative at phi=%g, before the end of observable inflation. It  cannot be treated by this code",
              phi);
 
-  class_test(*dV >= 0.,
+  class_test(*dV <= 0.,
              ppm->error_message,
              "All the code is written for the case dV/dphi<0. Here, in phi=%g, we have dV/dphi=%g. This potential cannot be treated by this code",
              phi,*dV);
@@ -2520,6 +2519,7 @@ int primordial_inflation_get_epsilon(
                ppm->error_message);
 
     *epsilon = 1./16./_PI_*pow(dV/V,2);
+    //printf("dv = %g and v = %g",dV,V);
     //*eta = 1./8./pi*(ddV/V)
     break;
 
@@ -2931,6 +2931,7 @@ int primordial_inflation_find_phi_pivot(
     /** - --> we now have a value phi_try believed to be close to and slightly smaller than phi_pivot */
 
     phi_try = y[ppm->index_in_phi];
+    printf("phy_try =%g",phi_try);
 
     /** - --> find attractor in phi_try */
 
