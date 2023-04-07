@@ -2006,7 +2006,6 @@ int primordial_inflation_find_attractor(
 
     /* take one step in phi, corresponding roughly to adding one more
        e-fold of inflation */
-
     phi=phi+dV_0/V_0/16./_PI_;
 
     /* fix the initial phi' to the slow-roll prediction in that point,
@@ -2040,6 +2039,7 @@ int primordial_inflation_find_attractor(
        which convergence we want to check */
 
     dphidt_0new = y[ppm->index_in_dphi]/y[ppm->index_in_a];
+    printf("dphidt0new =%g, dphidtold =%g",dphidt_0new,dphidt_0old);
 
   }
 
@@ -2051,7 +2051,7 @@ int primordial_inflation_find_attractor(
   *H_0 = sqrt((8.*_PI_/3.)*(0.5*dphidt_0new*dphidt_0new+V_0));
 
   if (ppm->primordial_verbose > 1) {
-    printf(" (attractor found in phi=%g with phi'=%g, H=%g)\n",phi_0,*dphidt_0,*H_0);
+    printf(" (attractor found in phi=%g with phi'=%g, H=%g, phi_coumter =%i)\n",phi_0,*dphidt_0,*H_0,counter);
   }
 
   return _SUCCESS_;
@@ -2111,6 +2111,7 @@ int primordial_inflation_evolve_background(
   double quantity=0.;
   double V,dV,ddV;
   double sign_dtau=0.;
+  double sign_der=1.;
 
   pipaw.ppm = ppm;
 
@@ -2182,6 +2183,7 @@ int primordial_inflation_evolve_background(
     break;
   case _phi_:
     // next (approximate) value of phi after next step
+    sign_der = -1.;
     quantity = y[ppm->index_in_phi]+dy[ppm->index_in_phi]*dtau;
     break;
   case _end_inflation_:
@@ -2204,7 +2206,7 @@ int primordial_inflation_evolve_background(
 
   /* loop over time steps, checking that there will be no overshooting */
 
-  while (sign_dtau*(stop - quantity) < 0.) {
+  while (sign_der*sign_dtau*(quantity - stop) < 0.) {
 
     /* check that V(phi) or H(phi) do not take forbidden values
        (negative or positive derivative) */
@@ -2914,6 +2916,8 @@ int primordial_inflation_find_phi_pivot(
 
     case N_star:
 
+      target = ppm->phi_pivot_target;
+      a_ratio_after_small_epsilon = y[ppm->index_in_a];
       class_call(primordial_inflation_evolve_background(ppm,
                                                         ppr,
                                                         y,
