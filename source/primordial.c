@@ -1173,7 +1173,7 @@ int primordial_inflation_solve_inflation(
   
   
   /** - eventually, needs first to find phi_pivot */
-  if ((ppm->primordial_spec_type == inflation_V_end) || (ppm->primordial_spec_type == inflation_V)) {
+  if (ppm->primordial_spec_type == inflation_V_end) {
 
     class_call(primordial_inflation_find_phi_pivot(ppm,ppr,y,dy),
                ppm->error_message,
@@ -2183,7 +2183,18 @@ int primordial_inflation_evolve_background(
     break;
   case _phi_:
     // next (approximate) value of phi after next step
-    sign_der = -1.;
+    switch (ppm->potential_derivative){
+    
+    case positive:
+      sign_der = -1.;
+      break;
+
+    case negative:
+      sign_der = 1.;
+      break;
+    
+    }
+
     quantity = y[ppm->index_in_phi]+dy[ppm->index_in_phi]*dtau;
     break;
   case _end_inflation_:
@@ -2436,11 +2447,22 @@ int primordial_inflation_check_potential(
              ppm->error_message,
              "This potential becomes negative at phi=%g, before the end of observable inflation. It  cannot be treated by this code",
              phi);
+  switch (ppm->potential_derivative){
 
-  class_test(*dV <= 0.,
+  case positive:
+    class_test(*dV <= 0.,
              ppm->error_message,
-             "All the code is written for the case dV/dphi<0. Here, in phi=%g, we have dV/dphi=%g. This potential cannot be treated by this code",
+             "The derivative of potential dV/dphi<0. Here, in phi=%g, we have dV/dphi=%g.",
              phi,*dV);
+
+    break;
+  case negative:
+    class_test(*dV >= 0.,
+             ppm->error_message,
+             "The derivative of potential dV/dphi>0. Here, in phi=%g, we have dV/dphi=%g.",
+             phi,*dV);
+    break;
+  }
 
   return _SUCCESS_;
 }
