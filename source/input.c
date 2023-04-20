@@ -4205,7 +4205,7 @@ int input_read_parameters_primordial(struct file_content * pfc,
         ppm->potential_derivative = positive;
       }
       else if (strcmp(string1,"negative") == 0){
-        ppm->potential = negative;
+        ppm->potential_derivative = negative;
       }
       else{
         class_stop(errmsg,"You specified 'full_potential' as '%s'. It has to be one of {'positive','negative'}.",string1);
@@ -4394,7 +4394,7 @@ int input_read_parameters_primordial(struct file_content * pfc,
         ppm->potential_derivative = positive;
       }
       else if (strcmp(string1,"negative") == 0){
-        ppm->potential = negative;
+        ppm->potential_derivative = negative;
       }
       else{
         class_stop(errmsg,"You specified 'full_potential' as '%s'. It has to be one of {'positive','negative'}.",string1);
